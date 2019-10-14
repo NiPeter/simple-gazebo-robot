@@ -1,0 +1,31 @@
+move_forward:
+  type: topic
+  message_type: geometry_msgs/Twist
+  topic_name: cmd_vel
+  deadman_buttons: [6]
+  axis_mappings:
+    -
+      axis: 4
+      offset: 0.35
+      target: linear.x
+      scale: -0.35
+    -
+      axis: 2
+      target: angular.z
+      scale: 1.0
+
+move_backward:
+  type: topic
+  message_type: geometry_msgs/Twist
+  topic_name: cmd_vel
+  deadman_buttons: [7]
+  axis_mappings:
+    -
+      axis: 5
+      offset: -0.1
+      target: linear.x
+      scale: 0.1
+    -
+      axis: 2
+      target: angular.z
+      scale: 1.0

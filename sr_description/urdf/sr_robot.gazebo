@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>${robot_name}</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <controlPeriod>0.05</controlPeriod>
+      <legacyModeNS>false</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="${robot_name}/imu_link">
+    <gravity>true</gravity>
+    <sensor name="${robot_name}/imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>  <!-- this is not the publish rate -->
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu</topicName>
+        <bodyName>${robot_name}/imu_link</bodyName>
+        <updateRateHZ>50</updateRateHZ>  <!-- this is the publish rate -->
+        <gaussianNoise>${0.0007*0.0007}</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>${robot_name}/imu_link</frameName>  <!-- from real MiR -->
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <xacro:macro name="wheel_friction" params="friction">
+    <mu1 value="${friction}"/>
+    <mu2 value="${friction}"/>
+    <kp value="1000000000.0"/>
+    <kd value="1000000.0"/>
+    <minDepth>0.001</minDepth>
+  </xacro:macro>
+
+  <!--  -->
+  <gazebo reference="${robot_name}/base_link">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <!--  -->
+  <gazebo reference="${robot_name}/wheel_left_link">
+    <xacro:wheel_friction friction="2000"/>
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <gazebo reference="${robot_name}/wheel_right_link">
+    <xacro:wheel_friction friction="2000"/>
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <gazebo reference="${robot_name}/caster_wheel_link">
+    <xacro:wheel_friction friction="100"/>
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+</robot>

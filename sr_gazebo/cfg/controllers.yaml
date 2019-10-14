@@ -1,0 +1,50 @@
+state_controller:
+  type: "joint_state_controller/JointStateController"
+  publish_rate: $(arg rate)
+  extra_joints:
+    - name:     $(arg robot_name)/caster_rotation_joint
+      position: 0.0
+      velocity: 0.0
+      effort:   0.0
+    - name:     $(arg robot_name)/caster_wheel_joint
+      position: 0.0
+      velocity: 0.0
+      effort:   0.0
+
+diff_drive:
+  type        : "diff_drive_controller/DiffDriveController"
+  left_wheel  : $(arg robot_name)/wheel_left_joint
+  right_wheel : $(arg robot_name)/wheel_right_joint
+  enable_odom_tf: true
+  publish_rate: $(arg rate)               # default: 50
+  pose_covariance_diagonal : [0.001, .001, 1000000., 1000000., 1000000., 1000.]
+  twist_covariance_diagonal: [0.001, .001, 1000000., 1000000., 1000000., 1000.]
+
+  # Wheel separation and radius multipliers
+  wheel_separation_multiplier: 1.0 # default: 1.0
+  wheel_radius_multiplier    : 1.0 # default: 1.0
+
+  # Velocity commands timeout [s], default 0.5
+  cmd_vel_timeout: $(arg cmd_vel_timeout)
+  publish_cmd: true
+  # Base frame_id
+  base_frame_id: $(arg robot_name)/base_footprint #default: base_link
+  odom_frame_id: $(arg robot_name)/odom
+  # Velocity and acceleration limits
+  # Whenever a min_* is unspecified, default to -max_*
+  linear:
+    x:
+      has_velocity_limits    : true
+      max_velocity           : 1.4  # m/s
+      has_acceleration_limits: true
+      max_acceleration       : 3.0  # m/s^2
+      has_jerk_limits        : false
+      max_jerk               : 5.0  # m/s^3
+  angular:
+    z:
+      has_velocity_limits    : true
+      max_velocity           : 3.0  # rad/s
+      has_acceleration_limits: true
+      max_acceleration       : 5.0  # rad/s^2
+      has_jerk_limits        : false
+      max_jerk               : 2.5  # rad/s^3

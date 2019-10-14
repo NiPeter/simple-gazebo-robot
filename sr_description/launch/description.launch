@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="robot_name" default="sr_robot" />
+
+  <arg name="frequency" default="50.0"/>
+  <arg name="ignore_timestamp" default="true"/>
+  <arg name="use_tf_static" default="true"/>
+
+
+  <include file="$(find sr_description)/launch/update.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher"
+        type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="$(arg frequency)"/>
+    <param name="ignore_timestamp" value="$(arg ignore_timestamp)"/>
+    <param name="use_tf_static" value="$(arg use_tf_static)"/>
+  </node>
+
+</launch>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!-- Delete old robot_description -->
+  <rosparam command="delete" ns="robot_description"/>
+
+</launch>

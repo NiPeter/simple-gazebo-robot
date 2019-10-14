@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <arg name="robot_name" default="sr_robot"/>
+
+  <!-- Delete old robot_description and load new -->
+  <rosparam command="delete" ns="robot_description"/>
+  <param name="robot_description"
+    command="$(find xacro)/xacro --inorder '$(find sr_description)/urdf/sr_robot.xacro' robot_name:=$(arg robot_name)" />
+
+</launch>
