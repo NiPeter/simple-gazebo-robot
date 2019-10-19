@@ -43,7 +43,7 @@
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="${name}_act">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <!-- <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface> -->
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -100,7 +100,7 @@
       <material name="white"/>
     </visual>
 
-    <xacro:box_inertial mass="${mass/10.0}" x="${offset}" y="${radius}" z="${radius}">
+    <xacro:box_inertial mass="${mass*0.5}" x="${offset}" y="${radius}" z="${radius}">
       <origin xyz="${-offset/2.0} 0 0" rpy="0 0 0" />
     </xacro:box_inertial>
   </link>
@@ -129,7 +129,7 @@
       <material name="wheel"/>
     </visual>
 
-    <xacro:sphere_inertial mass="${9.0/10.0*mass}" radius="${radius}">
+    <xacro:sphere_inertial mass="${mass*0.5}" radius="${radius}">
       <origin xyz="0 0 0" rpy="0 0 0" />
     </xacro:sphere_inertial>
   </link>
