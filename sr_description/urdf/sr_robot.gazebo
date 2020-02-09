@@ -11,26 +11,7 @@
     </plugin>
   </gazebo>
 
-  <gazebo reference="${robot_name}/imu_link">
-    <gravity>true</gravity>
-    <sensor name="${robot_name}/imu_sensor" type="imu">
-      <always_on>true</always_on>
-      <update_rate>50</update_rate>  <!-- this is not the publish rate -->
-      <visualize>true</visualize>
-      <topic>__default_topic__</topic>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>imu</topicName>
-        <bodyName>${robot_name}/imu_link</bodyName>
-        <updateRateHZ>50</updateRateHZ>  <!-- this is the publish rate -->
-        <gaussianNoise>${0.0007*0.0007}</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>${robot_name}/imu_link</frameName>  <!-- from real MiR -->
-      </plugin>
-      <pose>0 0 0 0 0 0</pose>
-    </sensor>
-  </gazebo>
-
+  <!-- Wheels Properties -->
   <xacro:macro name="wheel_friction" params="friction">
     <mu1 value="${friction}"/>
     <mu2 value="${friction}"/>
@@ -60,5 +41,63 @@
     <material>Gazebo/Red</material>
   </gazebo>
 
+  <!-- IMU Properties -->
+  <gazebo reference="${robot_name}/imu_link">
+    <gravity>true</gravity>
+    <sensor name="${robot_name}/imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>  <!-- this is not the publish rate -->
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu</topicName>
+        <bodyName>${robot_name}/imu_link</bodyName>
+        <updateRateHZ>50</updateRateHZ>  <!-- this is the publish rate -->
+        <gaussianNoise>${0.0007*0.0007}</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>${robot_name}/imu_link</frameName>  <!-- from real MiR -->
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+  <!-- Camera properties -->
+  <gazebo reference="${robot_name}/camera_link">
+   <sensor type="camera" name="camera">
+      <update_rate>5.0</update_rate>
+      <camera name="head">
+       <horizontal_fov>1.4</horizontal_fov>
+       <image>
+         <width>320</width>
+         <height>240</height>
+         <format>R8G8B8</format>
+       </image>
+       <clip>
+         <near>0.02</near>
+         <far>12</far>
+       </clip>
+       <noise>
+         <type>gaussian</type>
+         <mean>0.1</mean>
+         <stddev>0.1</stddev>
+       </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>5.0</updateRate>
+        <cameraName>camera</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>${robot_name}/camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+   </sensor>
+  </gazebo>
 
 </robot>

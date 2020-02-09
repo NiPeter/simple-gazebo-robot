@@ -54,14 +54,14 @@
 <xacro:macro name="chassis" params="name lenght width height axle_offset clearence mass">
   <link name="${name}_link">
     <collision>
-      <origin xyz="${-axle_offset} 0 ${height/2.0 + clearence}" rpy="0 0 0"/>
+      <origin xyz="${-axle_offset} 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="${lenght} ${width} ${height}"/>
       </geometry>
     </collision>
 
     <visual>
-      <origin xyz="${-axle_offset} 0 ${height/2.0 + clearence}" rpy="0 0 0"/>
+      <origin xyz="${-axle_offset} 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="${lenght} ${width} ${height}"/>
       </geometry>
@@ -69,14 +69,14 @@
     </visual>
 
     <xacro:box_inertial mass="${mass}" x="${lenght}" y="${width}" z="${height}">
-      <origin xyz="${-axle_offset} 0 ${height/2.0 + clearence}" rpy="0 0 0" />
+      <origin xyz="${-axle_offset} 0 0" rpy="0 0 0" />
     </xacro:box_inertial>
   </link>
 
   <joint name="${name}_joint" type="fixed">
     <parent link="${robot_name}/base_footprint"/>
     <child link="${name}_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 ${height/2.0 + clearence}" rpy="0 0 0"/>
   </joint>
 
 
