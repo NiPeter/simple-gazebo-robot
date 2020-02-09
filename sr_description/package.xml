@@ -4,13 +4,14 @@
   <version>0.1.0</version>
   <description>The sr_description package</description>
 
-  <maintainer email="peter@todo.todo">peter</maintainer>
+  <maintainer email="piotnikiel@gmail.com">NiPeter</maintainer>
 
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <export>
     <!-- None -->
