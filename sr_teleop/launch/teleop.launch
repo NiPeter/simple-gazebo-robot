@@ -9,30 +9,14 @@
   <group ns="$(arg robot_name)">
 
     <rosparam command="delete" ns="teleop"/>
-    <group ns="teleoperation">
 
-      <node name="joy_driver" pkg="joy" type="joy_node" >
-        <rosparam file="$(find sr_teleop)/cfg/joy.yaml" command="load" subst_value="true"/>
-      </node>
-
-
-      <rosparam ns="teleop" file="$(find sr_teleop)/cfg/joy_mapping.yaml" command="load" subst_value="true"/>
-      <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py" >
-        <!-- <remap from="cmd_vel" to="smoother/raw_cmd_vel"/> -->
-        <remap from="cmd_vel" to="/$(arg robot_name)/diff_drive/cmd_vel"/>
-
-      </node>
-
-      <!-- <node pkg="nodelet" type="nodelet" name="smoother"
-            args="standalone yocs_velocity_smoother/VelocitySmootherNodelet">
-            <rosparam file="$(find sr_teleop)/cfg/smoother.yaml" command="load" subst_value="true"/>
-            <remap from="smoother/smooth_cmd_vel" to="/$(arg robot_name)/diff_drive/cmd_vel"/>
-            <remap from="smoother/odometry" to="/$(arg robot_name)/diff_drive/odom"/>
-            <remap from="smoother/robot_cmd_vel" to="/$(arg robot_name)/diff_drive/cmd_vel"/>
-      </node> -->
+    <node name="joy_driver" pkg="joy" type="joy_node" >
+      <rosparam file="$(find sr_teleop)/cfg/joy.yaml" command="load" subst_value="true"/>
+    </node>
 
 
-    </group>
+    <rosparam ns="teleop" file="$(find sr_teleop)/cfg/joy_mapping.yaml" command="load" subst_value="true"/>
+    <node name="joy_teleop" pkg="joy_teleop" type="joy_teleop.py" />
 
   </group>
 

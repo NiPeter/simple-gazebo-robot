@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+
+  <world name="willow">
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://willowgarage</uri>
+      <pose>1 1 0 0 0 0</pose>
+    </include>
+
+    <physics type="ode" name="ode_quick" >
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.01</max_step_size>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <thread_position_correction>0</thread_position_correction>
+          <island_threads>4</island_threads>
+          <iters>50</iters>
+          <sor>1.7</sor>
+          <friction_model>cone_model</friction_model>
+        </solver>
+        <constraints>
+          <cfm>0.01</cfm>
+          <erp>0.5</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+        </constraints>
+      </ode>
+    </physics>
+    <physics type="ode" name="ode_world" default="true">
+      <real_time_update_rate>100.0</real_time_update_rate>
+      <max_step_size>0.01</max_step_size>
+      <ode>
+        <solver>
+          <type>world</type>
+          <thread_position_correction>0</thread_position_correction>
+          <island_threads>4</island_threads>
+          <iters>50</iters>
+          <sor>1.7</sor>
+          <friction_model>cone_model</friction_model>
+        </solver>
+        <constraints>
+          <cfm>0.01</cfm>
+          <erp>0.5</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+        </constraints>
+      </ode>
+    </physics>
+  </world>
+</sdf>

@@ -3,12 +3,13 @@
   <arg name="robot_name" default="sr_robot" />
 
   <arg name="frequency" default="50.0"/>
-  <arg name="ignore_timestamp" default="true"/>
-  <arg name="use_tf_static" default="true"/>
+  <arg name="ignore_timestamp" default="false"/>
+  <arg name="use_tf_static" default="false"/>
 
 
   <include file="$(find sr_description)/launch/update.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
+    <arg name="frequency" value="$(arg frequency)" />
   </include>
 
   <!-- Combine joint values -->

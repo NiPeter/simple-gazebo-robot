@@ -2,10 +2,11 @@
 <launch>
 
   <arg name="robot_name" default="sr_robot"/>
+  <arg name="frequency" default="50.0"/>
 
   <!-- Delete old robot_description and load new -->
   <rosparam command="delete" ns="robot_description"/>
   <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find sr_description)/urdf/sr_robot.xacro' robot_name:=$(arg robot_name)" />
+    command="$(find xacro)/xacro '$(find sr_description)/urdf/sr_robot.xacro' robot_name:=$(arg robot_name)" />
 
 </launch>

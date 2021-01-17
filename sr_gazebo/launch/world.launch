@@ -1,0 +1,19 @@
+  <launch>
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="false"/>
+    <arg name="world" default="empty.world"/>
+    <arg name="clock_frequency" default="false"/>
+
+
+    <param if="$(eval bool(arg('clock_frequency')))" name="gazebo/pub_clock_frequency" value="$(arg clock_frequency)" />
+
+    <param name="/use_sim_time" value="$(arg use_sim_time)"/>
+
+    <node name="gazebo" pkg="gazebo_ros" type="gzserver" output="screen"
+        args="--verbose --minimal_comms $(find sr_gazebo)/worlds/$(arg world)" required="true" />
+
+    <node if="$(arg gui)" name="gzclient" pkg="gazebo_ros" type="gzclient" output="screen" 
+        args="--verbose" required="true"/>
+
+</launch>

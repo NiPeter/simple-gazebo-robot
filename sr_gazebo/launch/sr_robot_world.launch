@@ -4,36 +4,19 @@
 
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
+  <arg name="gui" default="false"/>
   <arg name="world" default="empty.world"/>
+  <arg name="load_physics_param" default="true"/>
+  <arg name="clock_frequency" default="false"/>
+  
+  <arg name="rate" default="20.0"/>
 
-  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find sr_gazebo)/worlds/$(arg world)"/>
-    <arg name="debug" value="$(arg debug)" />
-    <arg name="gui" value="$(arg gui)" />
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
-    <arg name="headless" value="$(arg headless)"/>
-  </include>
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="yaw" default="0.0"/>
 
-  <group ns="$(arg robot_name)">
-    <!-- Load the URDF into the ROS Parameter Server -->
-    <include file="$(find sr_description)/launch/description.launch">
-      <arg name="robot_name" value="$(arg robot_name)" />
-      <arg name="frequency" default="20.0"/>
-    </include>
+  <include file="$(find sr_gazebo)/launch/world.launch" pass_all_args="true"/>
 
-    <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
-      args="-urdf -y 1.0 -model sr_robot -param robot_description"/>
-      <!-- ros_control rrbot launch file -->
-      <include file="$(find sr_gazebo)/launch/sr_robot_controller.launch" >
-        <arg name="robot_name" value="$(arg robot_name)" />
-        <arg name="rate" default="20.0" />
-      </include>
-  </group>
+  <include file="$(find sr_gazebo)/launch/sr_robot.launch" pass_all_args="true"/>
 
 </launch>

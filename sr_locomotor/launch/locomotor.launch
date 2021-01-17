@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <arg name="robot_name" default="sr_robot" />
+
+    <group ns="$(arg robot_name)">
+
+        <!-- <node name="local_map_server" pkg="nav_grid_server" type="server" output="screen"
+            args="$(find"
+        /> -->
+
+        <node name="locomotor" pkg="locomotor" type="locomotor1" output="screen">        
+            <rosparam command="load" file="$(find sr_locomotor)/cfg/locomotor.yaml" subst_value="true"/>
+        </node>
+    </group> 
+</launch>

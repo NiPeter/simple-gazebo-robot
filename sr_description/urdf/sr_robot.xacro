@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<robot name="sr_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="$(arg robot_name)"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- Import macros -->
   <xacro:arg name="robot_name" default="sr_robot"/>
+  <xacro:arg name="update_rate" default="20.0"/>
   <xacro:property name="robot_name" value="$(arg robot_name)"/>
-  <xacro:include filename="$(find sr_description)/urdf/macros.xacro" />
-  <xacro:include filename="$(find sr_description)/urdf/sr_robot.gazebo" />
+  <xacro:property name="update_rate" value="$(arg update_rate)"/>
 
   <!-- Constants -->
   <xacro:property name="PI" value="3.1415926535897931"/>
@@ -17,7 +17,7 @@
 
   <!-- Chassis constants -->
   <xacro:property name="chassis_mass" value="12"/>
-  <xacro:property name="chassis_lenght" value="0.95"/>
+  <xacro:property name="chassis_lenght" value="0.75"/>
   <xacro:property name="chassis_width" value="0.5"/>
   <xacro:property name="chassis_height" value="0.3"/>
 
@@ -32,41 +32,20 @@
   <xacro:property name="caster_radius" value="${clearence/2.0}"/>
   <xacro:property name="caster_offset" value="${caster_radius*1.5}"/>
 
+  <!-- Import macros -->
+  <xacro:include filename="$(find sr_description)/urdf/macros.xacro" />
+
   <!-- Robot links -->
 
   <link name="${robot_name}/base_footprint"/>
 
-  <xacro:chassis name="${robot_name}/base"
-    mass="${chassis_mass}"
-    lenght="${chassis_lenght}"
-    width="${chassis_width}"
-    height="${chassis_height}"
-    clearence="${clearence}"
-    axle_offset="${axle_offset}"
-  />
+  <xacro:chassis name="${robot_name}/base" mass="${chassis_mass}" lenght="${chassis_lenght}" width="${chassis_width}" height="${chassis_height}" clearence="${clearence}" axle_offset="${axle_offset}" />
 
-  <xacro:wheel name="${robot_name}/wheel_left"
-    mass="${wheel_mass}"
-    radius="${wheel_radius}"
-    width="${wheel_width}"
-    dx="0"
-    dy="${separation/2.0}"
-  />
+  <xacro:wheel name="${robot_name}/wheel_left" mass="${wheel_mass}" radius="${wheel_radius}" width="${wheel_width}" dx="0" dy="${separation/2.0}" />
 
-  <xacro:wheel name="${robot_name}/wheel_right"
-    radius="${wheel_radius}"
-    width="${wheel_width}"
-    mass="${wheel_mass}"
-    dx="0"
-    dy="-${separation/2.0}"
-  />
+  <xacro:wheel name="${robot_name}/wheel_right" radius="${wheel_radius}" width="${wheel_width}" mass="${wheel_mass}" dx="0" dy="-${separation/2.0}" />
 
-  <xacro:caster name="${robot_name}/caster"
-    radius="${caster_radius}"
-    mass="${caster_mass}"
-    offset="${caster_offset}"
-    dx="${caster_radius+caster_offset-chassis_lenght/2.0-axle_offset}"
-  />
+  <xacro:caster name="${robot_name}/caster" radius="${caster_radius}" mass="${caster_mass}" offset="${caster_offset}" dx="${caster_radius+caster_offset-chassis_lenght/2.0-axle_offset}" />
 
   <!-- IMU -->
   <link name="${robot_name}/imu_link" />
@@ -83,5 +62,14 @@
     <child link="${robot_name}/camera_link" />
     <origin xyz="${chassis_lenght/2.0-axle_offset+0.05} 0.0 0.0" rpy="0 0 0" />
   </joint>
+
+  <link name="${robot_name}/lidar_link"/>
+  <joint name="${robot_name}/lidar_joint" type="fixed">
+    <parent link="${robot_name}/base_link" />
+    <child link="${robot_name}/lidar_link"/>
+    <origin xyz="${chassis_lenght/2.0-axle_offset+0.05} 0.0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:include filename="$(find sr_description)/urdf/sr_robot.gazebo" />
 
 </robot>

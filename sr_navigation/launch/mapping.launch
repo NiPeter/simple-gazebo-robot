@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <arg name="robot_name" default="sr_robot"/>
+
+  <!-- <group ns="$(arg robot_name)"> -->
+    
+    <node name="slam_toolbox" pkg="slam_toolbox" type="sync_slam_toolbox_node" output="screen">
+        <rosparam command="load" file="$(find sr_navigation)/cfg/mapping.yaml" subst_value="true" />
+    </node>
+
+  <!-- </group> -->
+
+</launch>

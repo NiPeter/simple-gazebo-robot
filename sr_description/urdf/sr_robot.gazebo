@@ -1,22 +1,40 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="$(arg robot_name)"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <!-- ros_control plugin -->
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
       <robotNamespace>${robot_name}</robotNamespace>
-      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <controlPeriod>0.05</controlPeriod>
-      <legacyModeNS>false</legacyModeNS>
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odometry</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+      <publishWheelTF>false</publishWheelTF>
+      <publishOdomTF>true</publishOdomTF>
+      <publishWheelJointState>false</publishWheelJointState>
+      <wheelSeparation>${separation}</wheelSeparation>
+      <wheelDiameter>${wheel_radius*2}</wheelDiameter>
+      <wheelAcceleration>0</wheelAcceleration>
+      <wheelTorque>150.0</wheelTorque>
+      <updateRate>${update_rate}</updateRate>
+      <odometrySource>encoder</odometrySource>
+      <leftJoint>${robot_name}/wheel_left_joint</leftJoint>
+      <rightJoint>${robot_name}/wheel_right_joint</rightJoint>
+      <publishTf>true</publishTf>
     </plugin>
-  </gazebo>
 
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <robotNamespace>/${robot_name}</robotNamespace>
+      <jointName>${robot_name}/wheel_left_joint, ${robot_name}/wheel_right_joint</jointName>
+      <updateRate>${update_rate}</updateRate>
+      <alwaysOn>true</alwaysOn>
+    </plugin>
+
+  </gazebo>
   <!-- Wheels Properties -->
   <xacro:macro name="wheel_friction" params="friction">
     <mu1 value="${friction}"/>
     <mu2 value="${friction}"/>
-    <kp value="1000000000.0"/>
-    <kd value="1000000.0"/>
     <minDepth>0.001</minDepth>
   </xacro:macro>
 
@@ -27,43 +45,54 @@
 
   <!--  -->
   <gazebo reference="${robot_name}/wheel_left_link">
-    <xacro:wheel_friction friction="2000"/>
-    <material>Gazebo/Orange</material>
+    <xacro:wheel_friction friction="1e10"/>
+    <material>Gazebo/FlatBlack</material>
   </gazebo>
 
   <gazebo reference="${robot_name}/wheel_right_link">
-    <xacro:wheel_friction friction="2000"/>
-    <material>Gazebo/Orange</material>
+    <xacro:wheel_friction friction="1e10"/>
+    <material>Gazebo/FlatBlack</material>
   </gazebo>
 
   <gazebo reference="${robot_name}/caster_wheel_link">
-    <xacro:wheel_friction friction="100"/>
-    <material>Gazebo/Red</material>
+    <xacro:wheel_friction friction="0.1"/>
+    <material>Gazebo/FlatBlack</material>
   </gazebo>
 
-  <!-- IMU Properties -->
-  <gazebo reference="${robot_name}/imu_link">
-    <gravity>true</gravity>
-    <sensor name="${robot_name}/imu_sensor" type="imu">
-      <always_on>true</always_on>
-      <update_rate>50</update_rate>  <!-- this is not the publish rate -->
-      <visualize>true</visualize>
-      <topic>__default_topic__</topic>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-        <topicName>imu</topicName>
-        <bodyName>${robot_name}/imu_link</bodyName>
-        <updateRateHZ>50</updateRateHZ>  <!-- this is the publish rate -->
-        <gaussianNoise>${0.0007*0.0007}</gaussianNoise>
-        <xyzOffset>0 0 0</xyzOffset>
-        <rpyOffset>0 0 0</rpyOffset>
-        <frameName>${robot_name}/imu_link</frameName>  <!-- from real MiR -->
-      </plugin>
+  <gazebo reference="${robot_name}/lidar_link">
+    <sensor type="ray" name="lidar">
       <pose>0 0 0 0 0 0</pose>
+      <visualize>false</visualize>
+      <update_rate>${update_rate}</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>${-PI}</min_angle>
+            <max_angle>${PI}</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.20</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="lidar_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/${robot_name}/laser/scan</topicName>
+        <frameName>lidar_link</frameName>
+      </plugin>
     </sensor>
   </gazebo>
 
   <!-- Camera properties -->
-  <gazebo reference="${robot_name}/camera_link">
+  <!-- <gazebo reference="${robot_name}/camera_link">
    <sensor type="camera" name="camera">
       <update_rate>5.0</update_rate>
       <camera name="head">
@@ -77,11 +106,6 @@
          <near>0.02</near>
          <far>12</far>
        </clip>
-       <noise>
-         <type>gaussian</type>
-         <mean>0.1</mean>
-         <stddev>0.1</stddev>
-       </noise>
       </camera>
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <alwaysOn>true</alwaysOn>
@@ -98,6 +122,5 @@
         <distortionT2>0.0</distortionT2>
       </plugin>
    </sensor>
-  </gazebo>
-
+  </gazebo> -->
 </robot>
