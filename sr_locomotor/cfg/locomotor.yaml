@@ -5,8 +5,8 @@ current_local_planner: DWBLocalPlanner
 global_costmap:
   global_frame: map
   robot_base_frame: $(arg robot_name)/base_footprint
-  footprint: '[[1.0,1.0],[1.0,-1.0],[-1.0,-1.0],[-1.0,1.0]]'
-  footprint_padding: 0.01
+  footprint: '[[0.125,0.18],[0.125,-0.18],[-0.275,-0.18],[-0.275,0.18]]'
+  footprint_padding: 0.003
   height: 10
   origin_x: 0.0
   origin_y: 0.0
@@ -19,20 +19,31 @@ global_costmap:
   update_frequency: 5.0
   width: 10
 local_costmap:
-  global_frame: map
+  global_frame: $(arg robot_name)/odom
   robot_base_frame: $(arg robot_name)/base_footprint
-  footprint: '[[1.0,1.0],[1.0,-1.0],[-1.0,-1.0],[-1.0,1.0]]'
-  footprint_padding: 0.01
+  footprint: '[[0.125,0.18],[0.125,-0.18],[-0.275,-0.18],[-0.275,0.18]]'
+  footprint_padding: 0.003
   height: 10
   origin_x: 0.0
   origin_y: 0.0
   plugins:
   - {name: static_layer, type: "costmap_2d::StaticLayer"}
+  - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
   publish_frequency: 1.0
   resolution: 0.05
-  robot_radius: 0.46
+  robot_radius: 0.4
   transform_tolerance: 0.3
   update_frequency: 5.0
+  rolling_window: true
   width: 10
   static_layer:
     map_topic: "/$(arg robot_name)/map"
+  obstacle_layer:
+    observation_sources: /$(arg robot_name)/laser/scan
+    /$(arg robot_name)/laser/scan:
+      data_type: LaserScan
+    clearing: true
+    obstacle_range: 4.0
+    raytrace_range: 15.0
+    inf_is_valid: true
+    footprint_clearing_enabled: false

@@ -42,7 +42,7 @@
         <solver>
           <type>world</type>
           <thread_position_correction>0</thread_position_correction>
-          <island_threads>4</island_threads>
+          <island_threads>8</island_threads>
           <iters>50</iters>
           <sor>1.7</sor>
           <friction_model>cone_model</friction_model>

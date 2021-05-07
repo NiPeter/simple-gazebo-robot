@@ -8,7 +8,7 @@
 
 
 
-        <node name="locomotor" pkg="locomotor" type="locomotor1" output="screen">        
+        <node name="locomotor" pkg="locomove_base" type="move_base" output="screen">        
             <rosparam command="load" file="$(find sr_locomotor)/cfg/locomotor.yaml" subst_value="true"/>
         </node>
     </group> 
