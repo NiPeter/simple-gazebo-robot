@@ -2,8 +2,8 @@
 Changelog for package sr_teleop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2021-05-07)
+------------------
 * worlds and navigation
 * Merge branch 'camera'
 * Merge remote-tracking branch 'origin/feature/package-xml' into camera

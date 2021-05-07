@@ -2,8 +2,8 @@
 Changelog for package sr_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2021-05-07)
+------------------
 * Sync commit
 * worlds and navigation
 * Merge branch 'camera'
